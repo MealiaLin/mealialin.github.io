@@ -97,3 +97,9 @@ tags: [vue.js] # add tag
 ```
 这样就接收完毕，就可以在这个页面使用workTask数组里面的参数了。
 
+[本文在segmentfault的地址][1]
+
+[1]: https://segmentfault.com/a/1190000011707883
+
+
+
