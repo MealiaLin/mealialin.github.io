@@ -1,0 +1,36 @@
+---
+layout: page
+title: 关于
+header: 关于我
+---
+<div id="ace-content" class="ace-container-shift" style="margin-top: -50px">
+    <div class="ace-container">
+
+        <div class="ace-paper-stock">
+            <main class="ace-paper clearfix">
+                <div class="ace-paper-cont clear-mrg">
+                    <!-- START: PAGE CONTENT -->
+                    <div class="padd-box clear-mrg">
+
+                        {% include about/resumer_01-basic.html %}
+
+                        {% include about/resumer_02-profetional.html %}
+
+                        {% include about/resumer_03-education.html %}
+
+                        {% include about/resumer_04-experience.html %}
+
+                        {% include about/resumer_05-certification.html %}
+
+                        {% include about/resumer_06-personal_project.html %}
+
+                    </div><!-- .padd-box -->
+                    <!-- END: PAGE CONTENT -->
+                </div><!-- .ace-paper-cont -->
+            </main><!-- .ace-paper -->
+        </div><!-- .ace-paper-stock -->
+    </div><!-- .ace-container -->
+</div><!-- #ace-content -->
+
+<link rel="stylesheet" href="{{ "/css/about_style.css" | prepend: site.baseurl }}">
+<link href="{{ '/assets/fonts/fonts/icomoon/style.css' | prepend: site.baseurl }}" rel="stylesheet">

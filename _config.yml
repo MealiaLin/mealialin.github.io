@@ -1,0 +1,68 @@
+# Basic
+title: 我是帅帅的玉米
+subtitle: MealieLin
+description: 轻撩衣袖，笑对斑驳月光；持一抹惆怅，倒问沧澜；任我红袖舞乱，红尘依旧百转千回化成殇！
+# 头像里面的标题
+avatarTitle: MealieLin
+# 头像里面的描述
+avatarDesc: 编程·美食·旅游·小说
+url: "http://mealialin.github.io"
+
+# Comment
+comment:
+    # disqus: leopard
+    duoshuo: MealieLin
+
+# Social
+social:
+    weibo: 我是帅帅的玉米
+    github: MealiaLin
+    # twitter: 
+    mail: mealie_lin@163.com
+
+# 百度统计 
+# 使用博客模板请去掉或者更换 id 
+baidu:
+    id:
+
+# Google Analytics
+# 使用博客模板请去掉或者更换 id
+ga:
+    id:
+    host:
+
+
+# ----------------- 上面的信息修改成你自己的 ---------------------------
+#
+#  _post/   文章目录
+#  _drafts/ 未发布的文章目录
+#  目录结构具体参考文档：http://jekyll.com.cn/docs/structure/
+#
+# --------------- 下面的信息可以自行选择是否修改 ------------------------
+
+
+permalink: /:year/:month/:title/
+# Format
+markdown: kramdown
+highlighter: rouge
+
+# supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
+cover_color: clear #背景Mask
+
+# The blog button should not be removed.
+blog_button:
+    title: 博客
+
+# Navigation buttons in the front page.s
+nav:
+    - {title: 存档, description: archive, url: '/archive'}   
+    - {title: 标签, description: tags, url: '/tags'}      
+    - {title: 关于, description: about, url: '/about'}      
+    
+
+# Pagination
+plugins: [jekyll-paginate,jekyll-sitemap]
+paginate: 20
+paginate_path: "page/:num/"
+
+
