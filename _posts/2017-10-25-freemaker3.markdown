@@ -1,0 +1,155 @@
+---
+layout: post
+title: 【freemaker实现导出word③】详解将echarts的图片到出到word
+date: 2017-10-25 00:00:00 +0300
+description:  # Add post description (optional)
+img: # Add image post (optional)
+tags: [freemaker] # add tag
+---
+
+前面介绍了导出到word的代码实现，详见[这里][1]，里面有一部分涉及导出图片到word，在这里我再另外做一个详细的介绍。
+
+是这样的，我项目有个功能，里面就涉及到要将echarts形成的柱状图或者地图之类的图表导出到word，在网上找了很久，都是说将图片转成base64编码后传给后台解码，但没有一篇有详细具体的介绍，经过不断的摸索，终于实现了，在这里给大家做个分享。
+
+处理步骤：
+
+（1）图片我们可以在前台将要的图片转成base64编码，然后提交给后台接收
+
+（2）后台接收base64编码后使用工具类将base64解码成图片然后保存到本地中
+
+（3）在要导出word的时候读取下本地存储图片的路径然后把图片导出来就行了。
+
+1、在前台用js将echarts生成的图片转成base64编码，提交给后台。
+```javascript
+<script type="text/javascript">
+    //定义柱状图图片base64编码的全局变量
+    var barBase64Info;
+
+    function echar(){//柱状图
+        var myChart = echarts.init(document.getElementById('histogram'));
+
+        $.post('...',{},function (data) {
+            //...
+            var option = {
+            		//...
+                };
+            myChart.setOption(option);
+            //用getDataURL()将柱状图转义成base64编码赋给全局变量
+            barBase64Info = myChart.getDataURL();
+        }, 'json');
+    }
+    //下面根据你们自己的代码，点击按钮的时候将barBase64Info同时提交给后台接收就行了
+</script>
+```
+2、下面就是使用工具类在后台对图片进行处理，工具类如下：
+
+```java
+package com.*.util;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
+import javax.imageio.ImageIO;
+import Decoder.BASE64Decoder;
+import Decoder.BASE64Encoder;
+
+
+/**
+ * 类名称：ImageUtil
+ * 类描述：图片处理工具类
+ */
+public class ImageUtil {
+
+     /**
+      * 从path这个地址获取一张图片然后转为base64码
+      * @param imgName  图片的名字 如：123.png（是带后缀的）
+      * @param path     123.png图片存放的路径
+      * @return
+      * @throws Exception
+      */
+     public static String getImageFromServer(String imgName,String path)throws Exception{
+      BASE64Encoder encoder = new BASE64Encoder();
+      File f = new File(path+imgName);
+            if(!f.exists()){
+        f.createNewFile();
+            }
+            BufferedImage bi = ImageIO.read(f);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bi, "png", baos);
+            byte[] bytes = baos.toByteArray();
+            return encoder.encodeBuffer(bytes).trim();
+     }
+
+     /**
+      * 将一个base64转换成图片保存在  path文件夹下  ,命名随机
+      * @param base64String
+      * @param path  是一个文件夹路径
+      * @param imgName 图片名字(没有后缀)
+      * @throws Exception
+      */
+     public static String savePictoServer(String base64String,String path)throws Exception{
+
+         BASE64Decoder decoder = new BASE64Decoder();
+         //要把+在上传时变成的空格再改为+
+         base64String = base64String.replaceAll(" ", "+");
+         //去掉“data:image/png;base64,”后面才是base64编码，去掉之后才能解析
+         base64String = base64String.replace("data:image/png;base64,","");
+         //在本地指定位置建立文件夹，path由控制台那边进行定义
+         String realPath = path+"/"+"echarts";
+         File dir=new File(realPath);
+         if(!dir.exists()){
+          dir.mkdirs();
+         }
+         String fileName=path+"\\"+"echarts"+"\\"+UUID.randomUUID().toString()+".png";
+         try {
+             byte[] buffer = decoder.decodeBuffer(base64String);
+             OutputStream os = new FileOutputStream(fileName);
+             for(int i =0;i<buffer.length;++i){
+                 if(buffer[i]<0){//调整异常数据
+                     buffer[i]+=256;
+                 }
+             }
+             os.write(buffer);
+             os.close();
+         } catch (IOException e) {
+             throw new RuntimeException();
+         }
+
+        return fileName;
+     }
+     /**
+      * 读取图片在本地存储的位置
+      * @param imgFile
+      * @throws Exception
+      */
+     public String getImageStr(String imgFile) {
+            InputStream in = null;
+            byte[] data = null;
+            try {
+                in = new FileInputStream(imgFile);
+                data = new byte[in.available()];
+                in.read(data);
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            BASE64Encoder encoder = new BASE64Encoder();
+            return encoder.encode(data);
+        }
+}
+```
+3、最后一步就是控制台方法如何处理图片导出到word了，参照[上一篇文章的第三步][1]
+
+到这里我的freemaker导出word系列就分享完毕咯。
+
+
+[本文在segmentfault的地址][2]
+
+   [1]: https://mealialin.github.io/2017/10/freemaker2/
+   [2]: https://segmentfault.com/a/1190000011711373
+

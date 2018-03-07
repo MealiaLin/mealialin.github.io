@@ -1,0 +1,158 @@
+---
+layout: post
+title: java实现构造无限层级树形菜单
+date: 2017-09-30 10:00:00 +0300
+description:  # Add post description (optional)
+img: how-to-start.jpg  # Add image post (optional)
+tags: [java] # add tag
+---
+
+继续填[上篇文章(vue实现树形目录)][1]的坑，这里来讲一下后台java如何构造多叉树，这样前台就可接收到数据递归构造树形菜单了。
+
+我们来理一下如何实现构造多叉树的逻辑吧，其实整个问题概括起来就是
+
+1、构造一个实体类，用来存储节点，所以我们构造的需要四个对象（id，pid，name，和chirenList）
+
+2、构造菜单结构
+
+3、构造子菜单，如此循环，通过pid判断上级菜单
+
+**具体实现：**
+
+1、这里构造Tree.java实体类
+
+```java
+package com.tcl.jr.crm.entity;
+
+/**
+ * 类名称：Tree
+ * 类描述：树形结构
+ */
+public class Tree {
+
+	private String id;
+	private String pId;
+	private String name;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getpId() {
+		return pId;
+	}
+
+	public void setpId(String pId) {
+		this.pId = pId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Tree [id=" + id + ", pId=" + pId + ", name=" + name + "]";
+	}
+
+}
+
+```
+
+2、封装树形结构类，这里我封装成一个通用的工具类，方便项目中使用，MenuTreeUtil.java，完整代码如下，可直接复制使用：
+
+```java
+package com.tcl.jr.crm.util;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.tcl.jr.crm.entity.Tree;
+
+/**
+ * 类名称：MenuTreeUtil
+ * 类描述：递归构造树型结构
+ */
+public class MenuTreeUtil {
+
+	public static Map<String,Object> mapArray = new LinkedHashMap<String, Object>();
+    public List<Tree> menuCommon;
+    public List<Object> list = new ArrayList<Object>();
+
+    public List<Object> menuList(List<Tree> menu){
+        this.menuCommon = menu;
+        for (Tree x : menu) {
+            Map<String,Object> mapArr = new LinkedHashMap<String, Object>();
+            if(x.getpId()=="0"){
+                mapArr.put("id", x.getId());
+                mapArr.put("name", x.getName());
+                mapArr.put("pid", x.getpId());
+                mapArr.put("childList", menuChild(x.getId()));
+                list.add(mapArr);
+            }
+        }
+        return list;
+    }
+
+    public List<?> menuChild(String id){
+        List<Object> lists = new ArrayList<Object>();
+        for(Tree a:menuCommon){
+            Map<String,Object> childArray = new LinkedHashMap<String, Object>();
+            if(a.getpId() == id){
+                childArray.put("id", a.getId());
+                childArray.put("name", a.getName());
+                childArray.put("pid", a.getpId());
+                childArray.put("childList", menuChild(a.getId()));
+                lists.add(childArray);
+            }
+        }
+        return lists;
+    }
+
+}
+
+```
+3、最后在控制台请求方法调用数据就行了，在controller的方法如下：
+
+```java
+    /**
+	 * 显示APP树形结构
+	 */
+	@RequestMapping(value = { "getAPPTree" }, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String getAPPTree(HttpServletRequest request,
+	                    HttpServletResponse response) throws Exception {
+		Map<String, Object> returnmap = new HashMap<>();
+		MenuTreeUtil menuTree = new MenuTreeUtil();
+		PageData pd = this.getPageData();
+		try {
+            //这里的方法是根据前台的机构类型代码来查找数据库数据的，这里不多加解释，因人而异
+			List<Tree> list = dataDicService.buildTree(pd.getString("instType"));
+			List<Object> menuList = menuTree.menuList(list);
+			//区别于web端，这边APP端list不能转为json格式，
+			//直接将list传给前台，转成json对象的话vuejs前台无法识别渲染
+			returnmap.put("list", menuList);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return JsonMapper.toJsonString(returnmap);
+	}
+```
+4、然后前台ajax调用第三部的接口方法就而已请求到所需的数据，如何渲染成好的前台页面，参照我另一篇文章：[vuejs使用递归组件实现树形目录][1]
+
+[本文在segmentfault的地址][2]
+
+
+  [1]: https://mealialin.github.io/2017/09/vue-tree/
+  [2]: https://segmentfault.com/a/1190000011428318
+
+java构造树形菜单数据就说到这里啦，希望对大家有帮助，我的分享一般都是特别详细的，除了涉及项目隐私之外，是不会对大家有所保留的哟

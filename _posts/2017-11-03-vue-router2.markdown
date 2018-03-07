@@ -3,8 +3,8 @@ layout: post
 title: 【vue-router②】使用导航守卫控制页面前进刷新，后退缓存
 date: 2017-11-03 00:00:00 +0300
 description:  # Add post description (optional)
-img:  # Add image post (optional)
-tags: [vue.js, vue-router] # add tag
+img:  mac.jpg # Add image post (optional)
+tags: [vue.js] # add tag
 ---
 
  之前给大家分享了[利用keep-alive进行缓存你想要的页面][1]，然后到后面会出现这样的问题：
@@ -114,6 +114,8 @@ beforeRouteEnter(to, from, next) {
 
 **beforeRouteLeave** ：表示在当前组件离开之前，这个就是我的最爱了，现在对于组件的状态控制，我可都是依赖它的，像上面提到的控制弹框和跳转。
 
+[本文在segmentfault的地址][3]
 
   [1]: https://segmentfault.com/a/1190000011640453
   [2]: https://router.vuejs.org/zh-cn/advanced/navigation-guards.html
+  [3]: https://segmentfault.com/a/1190000011841673

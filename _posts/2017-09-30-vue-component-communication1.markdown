@@ -67,3 +67,7 @@ props:['mytitle'],
 </template>
 ```
 item是一个动态参数，一般是现在data钩子里面定义，然后根据所需的操作进行动态改变数据
+
+[本文在segmentfault的地址][1]
+
+[1]: https://segmentfault.com/a/1190000011688941

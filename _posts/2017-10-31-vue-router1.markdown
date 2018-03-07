@@ -3,8 +3,8 @@ layout: post
 title: 【vue-router①】router-link跳转页面传递参数
 date: 2017-10-31 00:00:00 +0300
 description:  # Add post description (optional)
-img: js-1.png # Add image post (optional)
-tags: [vue.js, vue-router] # add tag
+img: mac.jpg # Add image post (optional)
+tags: [vue.js] # add tag
 ---
 
 在vue项目中，往往会遇到这样的情况，就是要实现在一个循环列表中，点击其中一条跳转到下个页面，然后将这一条的相关数据带到下个页面中显示，这是个循环列表，无论点哪一条都是跳到相同的页面，只是填的数据不一样，这个时候就需要实现跳转的时候一起把参数携带过去。

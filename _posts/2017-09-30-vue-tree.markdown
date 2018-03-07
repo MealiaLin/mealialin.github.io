@@ -1,0 +1,221 @@
+---
+layout: post
+title: vuejs使用递归组件实现树形目录
+date: 2017-09-30 00:00:00 +0300
+description:  # Add post description (optional)
+img: how-to-start.jpg # Add image post (optional)
+tags: [vue.js] # add tag
+---
+
+前面我提到了[通讯录][1]的开发，里面的目录使用了vue的递归组件实现的树形目录，这篇文章就来讲讲如何实现树形目录吧！
+
+首先实现效果如下，觉得菜单还是比较nice的是吧：
+
+![vue-tree(1)]({{site.baseurl}}/assets/img/vue-tree(1).png)
+
+这边数据调用的是数据库的数据的，需要数据库进行数据的构造，这里涉及到java的构造多叉树的知识，后续我会另外写一篇文章详细讲解，这里讲下前端。
+
+数据可以先构造json使用，这里用到的格式大概如下,以childList来嵌套子菜单：
+
+```
+{
+    id：YH,
+    name：银行,
+    pid：0,
+    childList：[{
+        id:YH******,
+        name:国家开发银行,
+        pid:YH,
+        childList:[{
+            id:YH*****3,
+            name:国家开发银行香港分行,
+            pid:YH******,
+            childList:[]
+        },
+        {
+            id=YH*****1,
+            name=国家开发银行广东省分行,
+            pid=YH******,
+            childList=[]
+        }, {
+            id=YH*****2,
+            name=国家开发银行深圳分行,
+            pid=YH******,
+            childList=[]
+        }
+    ]}
+}
+```
+按照思路，我们是要ul里面套li，li里面套ul，这样无限套用，所以在子组件里面这么写：
+
+```html
+ <li>
+    <div>
+      <i  @click='toggle' v-if='isFolder' class="mui-icon iconfont"
+      :class="[open?'icon-wenjianjia':'icon-wenjianjiaguanbi']"></i>
+      <!--isFolder判断是否存在子级改变图标-->
+      <i  @click='toggle' class="mui-icon iconfont icon-wenjian" style="color: #00ccff" v-else></i>
+      <!--这里用到的方法是给父组件传值，具体可看上一篇文章-->
+      <span @click="propInstCode(model);propInstName(model)">
+        { {model.name}}
+      </span>
+    </div>
+    <ul v-show="open" v-if='isFolder'>
+      <tree-menu v-for='cel in model.childList' :model='cel'></tree-menu>
+    </ul>
+ </li>
+```
+在官方文档里面强调了name属性，所以我们在开始还要定义name，这边的name用到的是上面的tree-menu：
+
+```javascript
+export default {
+    name: 'treeMenu',
+    props: ['model'],
+    components: {}
+}
+```
+按照vue的思想，不操作Dom树，我们定义两个变量，一个显示隐藏子菜单(open),一个存不存子菜单修改图标(isFolder)。
+
+```javascript
+data() {
+      return {
+        open: false,
+        isFolder: true,
+      }
+ },
+```
+我是参照一篇文章编写的，在这一步说的是“利用vue计算属性动态改变isFolder的值，修改图标，判断存在不子级和子级长度”
+
+```javascript
+computed: {
+    isFolder() {
+        return this.model.childTreeNode && this.model.childTreeNode.length
+    }
+}
+```
+这里就出现了个问题，会一直不停地报错：
+
+![vue-tree(2)]({{site.baseurl}}/assets/img/vue-tree(2).png)
+
+找了很久的问题，结果我是这样解决的，去掉computed的计算属性，将其放到created里面：
+
+```javascript
+created(){
+      //将isFolder放在这里判断可以识别出最底层菜单，然后改变图标
+      //放在computed的话会一直报错并识别不出最底层菜单改变样式
+      this.isFolder = this.model.childList && this.model.childList.length;
+    }
+```
+
+显示/隐藏事件
+
+```javascript
+methods: {
+      toggle: function() {
+        if(this.isFolder){
+          this.open = !this.open;
+        }
+      },
+}
+```
+到这里就构造好树形目录的组件了，只要在相应的父组件里面调用就行了，完整代码如下：
+
+父组件中引用
+
+```html
+<ul class="tree_container" v-for="item in list">
+   <my-menu-tree :model='item' :instType='this.instType'></my-menu-tree>
+</ul>
+```
+子组件：
+
+```html
+<template>
+  <li>
+    <div>
+      <i  @click='toggle' v-if='isFolder' class="mui-icon iconfont"
+      :class="[open?'icon-wenjianjia':'icon-wenjianjiaguanbi']"></i>
+      <!--isFolder判断是否存在子级改变图标-->
+      <i  @click='toggle' class="mui-icon iconfont icon-wenjian" style="color: #00ccff" v-else></i>
+      <span @click="propInstCode(model);propInstName(model)">
+        { {model.name}}
+      </span>
+    </div>
+    <ul v-show="open" v-if='isFolder'>
+      <tree-menu v-for='cel in model.childList' :model='cel'></tree-menu>
+    </ul>
+  </li>
+</template>
+<script type="text/javascript">
+  import {bus} from '../../bus.js'
+  export default {
+    name: 'treeMenu',
+    props: ['model','instType'],
+    components: {},
+    data() {
+      return {
+        open: false,
+        isFolder: true,
+      }
+    },
+    computed: {
+    },
+    methods: {
+      toggle: function() {
+        if(this.isFolder){
+          this.open = !this.open;
+        }
+      },
+      //通过总线将值传给父组件
+      propInstCode:function (model) {
+        //$emit触发当前实例事件
+          bus.$emit('custTreeSay',this.model.id);
+      },
+      propInstName:function (model) {
+        bus.$emit('custTreeSayName',this.model.name);
+      }
+    },
+    created(){
+      //将isFolder放在这里判断可以识别出最底层菜单，然后改变图标，
+      //放在computed的话会一直报错并识别不出最底层菜单改变样式
+      this.isFolder = this.model.childList && this.model.childList.length;
+    }
+  }
+</script>
+
+<style lang="less" rel="stylesheet/less" scoped>
+  ul {
+    list-style: none;
+    padding-left: 20px;
+  }
+  ul li{
+    list-style: none;
+  }
+  a{
+    color: #404040;
+    //text-decoration: underline;
+  }
+  i.icon {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+  }
+  i{
+    opacity: 0.8;
+    color: #f0ad4e;
+  }
+  .tree-menu li {
+    line-height: 1.5;
+  }
+</style>
+```
+子组件可以直接使用，样式也一起贴出来了，但是在父组件中也有点样式，就留给你们自己操作了，这个完整的代码里面还包括了上篇文章提到的组件传值的部分。
+
+我的icon用的是阿里的iconfont，大家也可以百度搜一下
+
+[本文在segmentfault的地址][2]
+
+[1]: https://mealialin.github.io/2017/09/vue-component-communication2/
+[2]: https://segmentfault.com/a/1190000011427573

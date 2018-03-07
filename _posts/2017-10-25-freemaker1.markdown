@@ -1,0 +1,43 @@
+---
+layout: post
+title: 【freemaker实现导出word①】创建xml/ftl模板
+date: 2017-10-25 00:00:00 +0300
+description:  # Add post description (optional)
+img: # Add image post (optional)
+tags: [freemaker] # add tag
+---
+
+在javaweb项目中，往往很多时候需要我们实现将数据导出到word文档中，但是导出word首要做法就是创建模板，没有模板，请求出来的数据就没有可以存放和显示的地方。导出的模板需要xml或者ftl格式的文件。
+
+新建word文档，然后按照自己想要的进行设计相应模板结构，填入关键字，然后另存为xml，打开xml代码文件，将关键字的位置修改为相应的字段格式：${data}
+模板如下：
+
+![freemaker1(1)]({{site.baseurl}}/assets/img/freemaker1(1).png)
+
+（1）打开xml代码，修改关键位置的数据，这时候需要有格式化代码的工具，才能看到规整的代码，推荐使用sublime的格式化工具，需要安装，参照[sublime格式化][1]。
+
+![freemaker1(2)]({{site.baseurl}}/assets/img/freemaker1(2).png)
+
+像上图关键数据的位置，编写模板的时候会造成${a.item1}这个部分中间会有其他乱七八糟的代码，把他们中间其他的都删掉，这个变量要完整才能请求到最后数据。
+
+![freemaker1(3)]({{site.baseurl}}/assets/img/freemaker1(3).png)
+
+（2）list遍历循环输出的话要在每一行前后加上***<#list 你的数据list as 转换的变量名></#list>***，相当于前段li标签的遍历循环输出一样，找到循环的行，加上这个list就行了
+
+![freemaker1(4)]({{site.baseurl}}/assets/img/freemaker1(4).png)
+
+（3）图片的话，在模板里面先加入图片占位，打开xml文档，图片所在的位置会有一大串base64编码，将图片形成的一大串base64编码改成图片的数据变量，如${image}
+
+![freemaker1(5)]({{site.baseurl}}/assets/img/freemaker1(5).png)
+
+像上图那样一大串白色的就是上面说的图片base64编码，把他们都删掉替换成图片的变量就可以了
+
+因为到这里文件里面加入的<#list 你的数据list as 转换的变量名></#list>属于非法写法，还有图片的base64编码没了，所以到这里的xml文档就无法用word打开查看最终样式了。
+
+到这里导出word的模板就编辑完成了。代码实现导出word请看后续文章。
+
+[本文在segmentfault的地址][2]
+
+   [1]: http://www.cnblogs.com/midhillzhou/p/5827191.html
+   [2]: https://segmentfault.com/a/1190000011709732
+

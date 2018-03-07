@@ -1,0 +1,311 @@
+---
+layout: post
+title: 【freemaker实现导出word②】代码实现导出word（包括导出list数据和导出图片到word）
+date: 2017-10-25 00:00:00 +0300
+description:  # Add post description (optional)
+img: # Add image post (optional)
+tags: [freemaker] # add tag
+---
+
+前面文章已经分享了如何创建导出word需要用到的[xml/ftl模板][1]了，接下来这里要给大家分享的是如何用后台制作导出word的代码工具和controller实现。
+
+1、首先是工具类，没有工具，谈何实现呢？下面贴我这边导出word的utils，大家可以直接复制粘贴到你们项目就可以引用了。
+
+```java
+package com.*.util;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import Decoder.BASE64Encoder;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
+
+/**
+ * 类名称：DocUtil
+ * 类描述：导出word工具类
+ */
+public class DocUtil {
+    public Configuration configure=null;
+
+    public DocUtil(){
+        configure= new Configuration(Configuration.getVersion());
+        configure.setDefaultEncoding("utf-8");
+    }
+    /**
+     * 根据Doc模板生成word文件
+     * @param dataMap 需要填入模板的数据
+     * @param downloadType 文件名称
+     * @param savePath 保存路径
+     */
+    public File createDoc(Map<String,Object> dataMap,
+            String modelPath,String downloadType,HttpServletRequest request){
+    	String name = "temp" + (int) (Math.random() * 100000) + ".doc";
+        File f = new File(name);
+        //加载需要装填的模板
+        Template template=null;
+    	try {
+
+            //设置模板装置方法和路径，FreeMarker支持多种模板装载方法。可以重servlet，classpath,数据库装载。
+            //加载模板文件，放在/uploadFiles/file/demoDoc下
+            configure.setServletContextForTemplateLoading(request.getServletContext(), modelPath);
+            //设置对象包装器
+//            configure.setObjectWrapper(new DefaultObjectWrapper());
+            //设置异常处理器
+            configure.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+            //定义Template对象，注意模板类型名字与downloadType要一致
+            template=configure.getTemplate(downloadType);
+
+            Writer out = new OutputStreamWriter(new FileOutputStream(f), "utf-8");
+            template.process(dataMap, out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TemplateException e) {
+            e.printStackTrace();
+        }
+    	 return f;
+    }
+
+    /**
+     * 根据Doc模板生成word文件
+     * @param dataMap 需要填入模板的数据
+     * @param downloadType 文件名称
+     * @param savePath 保存路径
+     */
+    public void createXls(Map<String,Object> dataMap,
+                String downloadType,String webPath,String fileName,String savePath){
+    	System.out.println(savePath.substring(savePath.length()-1));
+    	if(savePath.substring(savePath.length()-1).equals(File.separator)) {
+    		savePath = savePath + "uploadFiles" + File.separator
+    		            + "file" + File.separator + "jdhDailySheet"+ File.separator;
+    	}else {
+    		savePath = savePath  + File.separator + "uploadFiles" + File.separator
+    		            + "file" + File.separator + "jdhDailySheet"+ File.separator;
+    	}
+        File f = new File(savePath+fileName);
+
+        //加载需要装填的模板
+        Template template=null;
+    	try {
+    		if(!f.getParentFile().exists()){
+                f.getParentFile().mkdirs();
+            }
+            if(f.exists() && f.isFile()){
+            	f.delete();
+            } else {
+            	f.createNewFile();
+            }
+
+            //设置模板装置方法和路径，FreeMarker支持多种模板装载方法。可以重servlet，classpath,数据库装载。
+            //加载模板文件，放在/uploadFiles/file/demoDoc下
+            configure.setDirectoryForTemplateLoading(new File(
+                            webPath + "uploadFiles" + File.separator + "file" + File.separator));
+            //设置对象包装器
+//            configure.setObjectWrapper(new DefaultObjectWrapper());
+            //设置异常处理器
+            configure.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+            //定义Template对象，注意模板类型名字与downloadType要一致
+            template=configure.getTemplate(downloadType);
+
+            Writer out = new OutputStreamWriter(new FileOutputStream(f), "utf-8");
+            template.process(dataMap, out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TemplateException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+```
+----------
+2、接下来是处理图片的工具类，这里导出word包含导出图片到word，所以需要对图片进行处理，是怎么个原理呢，在这里和大家简单介绍下，具体在后续我会具体详细另外写一篇文章分享。
+（1）图片我们可以在前台将要的图片转成base64编码，然后提交给后台接收
+（2）后台接收base64编码后使用工具类将base64解码成图片然后保存到本地中
+（3）在要导出word的时候读取下本地存储图片的路径然后把图片导出来就行了。
+工具类如下：同第一条一样可直接复制到你们项目中使用。
+
+```java
+package com.*.util;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
+import javax.imageio.ImageIO;
+import Decoder.BASE64Decoder;
+import Decoder.BASE64Encoder;
+
+
+/**
+ * 类名称：ImageUtil
+ * 类描述：图片处理工具类
+ */
+public class ImageUtil {
+
+	 /**
+	  * 从path这个地址获取一张图片然后转为base64码
+	  * @param imgName  图片的名字 如：123.png（是带后缀的）
+	  * @param path     123.png图片存放的路径
+	  * @return
+	  * @throws Exception
+	  */
+	 public static String getImageFromServer(String imgName,String path)throws Exception{
+	  BASE64Encoder encoder = new BASE64Encoder();
+	  File f = new File(path+imgName);
+	        if(!f.exists()){
+	    f.createNewFile();
+	        }
+	        BufferedImage bi = ImageIO.read(f);
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        ImageIO.write(bi, "png", baos);
+	        byte[] bytes = baos.toByteArray();
+	        return encoder.encodeBuffer(bytes).trim();
+	 }
+
+	 /**
+	  * 将一个base64转换成图片保存在  path文件夹下  ,命名随机
+	  * @param base64String
+	  * @param path  是一个文件夹路径
+	  * @param imgName 图片名字(没有后缀)
+	  * @throws Exception
+	  */
+	 public static String savePictoServer(String base64String,String path)throws Exception{
+
+		 BASE64Decoder decoder = new BASE64Decoder();
+		 //要把+在上传时变成的空格再改为+
+		 base64String = base64String.replaceAll(" ", "+");
+		 //去掉“data:image/png;base64,”后面才是base64编码，去掉之后才能解析
+		 base64String = base64String.replace("data:image/png;base64,","");
+		 //在本地指定位置建立文件夹，path由控制台那边进行定义
+		 String realPath = path+"/"+"echarts";
+         File dir=new File(realPath);
+         if(!dir.exists()){
+          dir.mkdirs();
+         }
+         String fileName=path+"\\"+"echarts"+"\\"+UUID.randomUUID().toString()+".png";
+         try {
+             byte[] buffer = decoder.decodeBuffer(base64String);
+             OutputStream os = new FileOutputStream(fileName);
+             for(int i =0;i<buffer.length;++i){
+                 if(buffer[i]<0){//调整异常数据
+                	 buffer[i]+=256;
+                 }
+             }
+             os.write(buffer);
+             os.close();
+         } catch (IOException e) {
+             throw new RuntimeException();
+         }
+
+        return fileName;
+	 }
+	 /**
+	  * 读取图片在本地存储的位置
+	  * @param imgFile
+	  * @throws Exception
+	  */
+	 public String getImageStr(String imgFile) {
+	        InputStream in = null;
+	        byte[] data = null;
+	        try {
+	            in = new FileInputStream(imgFile);
+	            data = new byte[in.available()];
+	            in.read(data);
+	            in.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        BASE64Encoder encoder = new BASE64Encoder();
+	        return encoder.encode(data);
+	    }
+}
+
+```
+----------
+
+3、接下来就要介绍下在控制台怎么使用工具类实现导出word啦，详细细节看**注释**
+
+```java
+static String MODELPATH = "/uploadFiles/…";
+
+@RequestMapping(value = { "/downloadDoc" }, produces = "text/html;charset=UTF-8")
+public void downloadDoc(HttpServletRequest request, HttpServletResponse response) {
+	//引入导出word的工具类
+	DocUtil docUtil = new DocUtil();
+	//引入处理图片的工具类，包含将base64编码解析为图片并保存本地，获取图片本地路径
+	ImageUtil imageUtil = new ImageUtil();
+	//建立map存储所要导出到word的各种数据和图像，不能使用自己项目封装的类型，例如PageData
+	Map<String, Object> dataMap = new HashMap<String, Object>();
+
+	/*
+     *  这一步，请求所需要导出到word的数据quotaList，把你们的数据处理放到这里就行了
+     */
+
+
+	//这一步，进行图片的处理，获取前台传过来的图片base64编码，
+	//在利用工具类解析图片保存到本地，然后利用工具类获取图片本地地址
+	String barBase64Info = request.getParameter("barBase64Info");
+	String path = "D:";
+	String image1 = ImageUtil.savePictoServer(barBase64Info, path);
+	image1  = imageUtil.getImageStr(image1);
+
+	//将以上处理的数据都存入dataMap 中
+
+	//以下都是进行word文件的处理，直接复制，然后细节按需修改就行了
+	request.setCharacterEncoding("utf-8");
+	File file = null;
+	InputStream fin = null;
+	OutputStream out = null;
+	String filename = "文件名.doc";
+        //dataMap是上面处理完的数据，MODELPATH是模板文件的存储路径，"模板.xml"是相应的模板文件
+	file = docUtil.createDoc(dataMap, MODELPATH, "模板.xml", request);
+	fin = new FileInputStream(file);
+	//需要传递这个长度，不然下载文件后，打开提示内容有问题，如docx等
+	response.setContentLength((int) file.length());
+	response.setCharacterEncoding("utf-8");
+	response.setContentType("application/msword");
+	response.setHeader("Content-disposition",
+	           "attachment;filename=" + new String(filename.getBytes("utf-8"), "iso8859-1"));
+	out = response.getOutputStream();
+	byte[] buffer = new byte[1024]; // 缓冲区
+	int bytesToRead = -1;
+	// 通过循环将读入的Word文件的内容输出到浏览器中
+	while ((bytesToRead = fin.read(buffer)) != -1) {
+		out.write(buffer, 0, bytesToRead);
+	}
+	if (fin != null)
+		fin.close();
+	if (out != null)
+		out.close();
+	if (file != null)
+		file.delete(); // 删除临时文件
+
+
+}
+
+```
+**注意：**模板的list在后台构造的时候必须是实体类或者有属性类型的，如果是自己项目封装的类型，如在我的项目中有自己封装的PageData类型的，在模板的list是识别不出list里面的数据的。
+
+[本文在segmentfault的地址][2]
+
+   [1]: https://mealialin.github.io/2017/10/freemaker1/
+   [2]: https://segmentfault.com/a/1190000011710682
+
