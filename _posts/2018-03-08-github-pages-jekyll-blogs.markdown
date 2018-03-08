@@ -20,7 +20,7 @@ tags: [jekyll] # add tag
 要求：本地安装git，拥有个人的github账号
 
 首先，在你的github上建立一个以xxx.github.io为命名的代码仓库，其中xxx代表的是你的github账号名，如我的账号名是MealiaLin，则建立的是
-[mealialin.github.io](https://mealielin.github.io)，同时在底部**Add .gitigore选择Jekyll**模板，这样Jekyll产生的临时文件，
+[mealialin.github.io](https://github.com/MealiaLin/mealialin.github.io)，同时在底部**Add .gitigore选择Jekyll**模板，这样Jekyll产生的临时文件，
 例如_site目录就不会添加到源代码管理中，当然你也可以以后手动配置
 
 建立完代码仓库后，将代码仓库克隆到本地
