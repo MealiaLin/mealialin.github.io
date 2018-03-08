@@ -133,10 +133,10 @@ h3 {
   padding: 6px 15px;
   margin-bottom: 20px;
   margin-top: 5px;
-  background:#B9D3EE;
+  background: #4aaaa511;
   /*0px right, 5px botton, 5px fuzzy*/
-  box-shadow: 0px 5px 5px #9FB6CD;
-  border-left: 6px solid #1874CD; 
+  /*box-shadow: 0px 5px 5px #9FB6CD;*/
+  border-left: 6px solid #4aaaa5;
   position:relative;
 }
 
@@ -1650,3 +1650,41 @@ a.newer-posts:hover {
   text-decoration: underline;
 }
 /* - - - - - - - - - - 文章页面样式结束- - - - - - - - - - */
+
+/*- - - - - - - - - -存档列表样式- - - - - - - - - -*/
+.page .hat_title{
+
+}
+.page .hat_title h3 {
+  color: #4aaaa5;
+}
+.page .post_list{
+
+}
+.page .post_list ul li{
+  list-style: none url("/images/start.png");
+}
+.page .post_list ul li span{
+  color: #4aaaa5;
+}
+.page .post_list ul li a{
+  margin-left: 10px;
+  color: #f0ad4e;
+}
+.page .post_list ul li a:hover{
+  color: #666666;
+}
+
+/*- - - - - - - - - -标签列表样式- - - - - - - - - -*/
+.post h3{
+  color: #4aaaa5;
+}
+.post ul li{
+  list-style: none url("/images/start.png");
+}
+.post ul li a{
+  color: #f0ad4e;
+}
+.post ul li a:hover{
+  color: #666666;
+}
