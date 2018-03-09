@@ -1652,17 +1652,13 @@ a.newer-posts:hover {
 /* - - - - - - - - - - 文章页面样式结束- - - - - - - - - - */
 
 /*- - - - - - - - - -存档列表样式- - - - - - - - - -*/
-.page .hat_title{
-
-}
 .page .hat_title h3 {
   color: #4aaaa5;
 }
-.page .post_list{
-
-}
 .page .post_list ul li{
   list-style: none url("/images/start.png");
+  font-family: "Quicksand", "YouYuan", "幼圆", sans-serif;
+  /*border-bottom: dashed 1px #aaaaaa;*/
 }
 .page .post_list ul li span{
   color: #4aaaa5;
@@ -1681,6 +1677,7 @@ a.newer-posts:hover {
 }
 .post ul li{
   list-style: none url("/images/start.png");
+  font-family: "Quicksand", "YouYuan", "幼圆", sans-serif;
 }
 .post ul li a{
   color: #f0ad4e;

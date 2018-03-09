@@ -1,3 +1,4 @@
+<!--存档页面-->
 {% comment %}<!--
 Collate_posts helper. Collated posts by year and month.
 Usage:
@@ -39,9 +40,8 @@ Usage:
   
     <li>
       <span>
-        {{ post.date | date: "%Y-%m-%e" }}
+        {{ post.date | date: "%Y-%m-%d" }}&nbsp;&nbsp;&raquo;
       </span>
-       &raquo; 
       <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
     </li>
  
