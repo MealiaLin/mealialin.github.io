@@ -61,17 +61,17 @@ pip3 install lxml
 
 想了解爬虫知识，首先得了解**BeautifulSoup**相关知识
 
-详细内容可参照官方文档：[URL][http://beautifulsoup.readthedocs.io/zh_CN/latest/]
+详细内容可参照官方文档：[URL](http://beautifulsoup.readthedocs.io/zh_CN/latest/)
 
-但是我觉得参照的教程的博主写的更为通俗易懂：[URL][http://blog.csdn.net/c406495762/article/details/71158264]
+但是我觉得参照的教程的博主写的更为通俗易懂：[URL](http://blog.csdn.net/c406495762/article/details/71158264)
 
 **4、小说内容的爬取**
 
-这边同样的，以《笔趣看》小说网站（[URL][http://www.biqukan.com/]）为例
+这边同样的，以《笔趣看》小说网站（[URL](http://www.biqukan.com/)）为例
 
 **（1）单章小说内容的爬取**
 
-打开《一念永恒》小说的第一章（[URL][http://www.biqukan.com/1_1094/5403177.html]），进行审查元素分析
+打开《一念永恒》小说的第一章（[URL](http://www.biqukan.com/1_1094/5403177.html)），进行审查元素分析
 
 由审查结果可知，文章的内容存放在id为content，class为showtxt的div标签中：
 
@@ -112,10 +112,10 @@ pip3 install lxml
  
  **（2）各章小说链接的爬取**
  
- URL：[http://www.biqukan.com/1_1094/][http://www.biqukan.com/1_1094/]
+ URL：[http://www.biqukan.com/1_1094/](http://www.biqukan.com/1_1094/)
  
  由审查结果可知，小说每章的链接放在了class为listmain的div标签中。链接具体位置放在html->body->div->dd->dl->a的href属性中，例如下图的第759章的href属性为/1_1094/14235101.html，
- 那么该章节的地址为：[URL][http://www.biqukan.com/1_1094/14235101.html]
+ 那么该章节的地址为：[URL](http://www.biqukan.com/1_1094/14235101.html)
  
  因此，我们可以使用如下方法获取正文所有章节的地址：
  
