@@ -33,7 +33,7 @@ tags: [python3] # add tag
 
 ### 二、实战步骤 ###
 
-爬虫在github的地址是：https://github.com/MealiaLin/myPython/tree/master/novelDownload
+爬虫在[github的地址][https://github.com/MealiaLin/myPython/tree/master/novelDownload]
 
 **1、环境安装**
 
@@ -61,21 +61,25 @@ pip3 install lxml
 
 想了解爬虫知识，首先得了解**BeautifulSoup**相关知识
 
-详细内容可参照官方文档：http://beautifulsoup.readthedocs.io/zh_CN/latest/
+详细内容可参照官方文档：[URL][http://beautifulsoup.readthedocs.io/zh_CN/latest/]
 
-但是我觉得参照的教程的博主写的更为通俗易懂：http://blog.csdn.net/c406495762/article/details/71158264
+但是我觉得参照的教程的博主写的更为通俗易懂：[URL][http://blog.csdn.net/c406495762/article/details/71158264]
 
 **4、小说内容的爬取**
 
-这边同样的，以《笔趣看》小说网站（URL：http://www.biqukan.com/）为例
+这边同样的，以《笔趣看》小说网站（[URL][http://www.biqukan.com/]）为例
 
 **（1）单章小说内容的爬取**
 
-打开《一念永恒》小说的第一章（URL：http://www.biqukan.com/1_1094/5403177.html），进行审查元素分析
+打开《一念永恒》小说的第一章（[URL][http://www.biqukan.com/1_1094/5403177.html]），进行审查元素分析
 
 由审查结果可知，文章的内容存放在id为content，class为showtxt的div标签中：
 
-![图片2]({{site.baseurl}}/assets/img/python/biqu1.png) ![图片3]({{site.baseurl}}/assets/img/python/biqu2.png)
+![图片2]({{site.baseurl}}/assets/img/python/biqu1.png) 
+
+局部放大：
+
+![图片3]({{site.baseurl}}/assets/img/python/biqu2.png)
 
  因此我们，可以使用如下方法将本章小说内容爬取下来：
  
@@ -87,7 +91,8 @@ pip3 install lxml
  if __name__ == "__main__":
      download_url = 'http://www.biqukan.com/1_1094/5403177.html'
      head = {}
-     head['User-Agent'] = 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19'
+     head['User-Agent'] = 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) 
+           AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19'
      download_req = request.Request(url = download_url, headers = head)
      download_response = request.urlopen(download_req)
      download_html = download_response.read().decode('gbk','ignore')
@@ -107,10 +112,10 @@ pip3 install lxml
  
  **（2）各章小说链接的爬取**
  
- URL：http://www.biqukan.com/1_1094/
+ URL：[http://www.biqukan.com/1_1094/][http://www.biqukan.com/1_1094/]
  
  由审查结果可知，小说每章的链接放在了class为listmain的div标签中。链接具体位置放在html->body->div->dd->dl->a的href属性中，例如下图的第759章的href属性为/1_1094/14235101.html，
- 那么该章节的地址为：http://www.biqukan.com/1_1094/14235101.html
+ 那么该章节的地址为：[URL][http://www.biqukan.com/1_1094/14235101.html]
  
  因此，我们可以使用如下方法获取正文所有章节的地址：
  
@@ -122,7 +127,8 @@ pip3 install lxml
  if __name__ == "__main__":
      target_url = 'http://www.biqukan.com/1_1094/'
      head = {}
-     head['User-Agent'] = 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19'
+     head['User-Agent'] = 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) 
+                    AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19'
      target_req = request.Request(url = target_url, headers = head)
      target_response = request.urlopen(target_req)
      target_html = target_response.read().decode('gbk','ignore')
@@ -169,7 +175,8 @@ pip3 install lxml
       target_url = 'http://www.biqukan.com/1_1094/'
       #User-Agent
       head = {}
-      head['User-Agent'] = 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19'
+      head['User-Agent'] = 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D) 
+                    AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19'
       target_req = request.Request(url = target_url, headers = head)
       target_response = request.urlopen(target_req)
       target_html = target_response.read().decode('gbk','ignore')
