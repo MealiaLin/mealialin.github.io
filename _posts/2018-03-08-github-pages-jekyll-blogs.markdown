@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 基于GitHub Pages+Jekyll搭建个人博客
-date: 2018-01-15 00:00:00 +0300
+date: 2018-03-08 00:00:00 +0300
 description:  # Add post description (optional)
 img: background-cover.jpg # Add image post (optional)
 tags: [jekyll] # add tag
