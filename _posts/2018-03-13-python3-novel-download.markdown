@@ -33,7 +33,7 @@ tags: [python3] # add tag
 
 ### 二、实战步骤 ###
 
-爬虫在[github的地址][https://github.com/MealiaLin/myPython/tree/master/novelDownload]
+爬虫在[github的地址](https://github.com/MealiaLin/myPython/tree/master/novelDownload)
 
 **1、环境安装**
 
