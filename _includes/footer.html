@@ -8,10 +8,20 @@
           {% if site.social.weibo %}
           <!-- Weibo -->
           <li class="navigation__item_social">
-            <a href="http://weibo.com/{{site.social.weibo}}" title="@{{site.social.weibo}} 的 微博" target="_blank">
+            <a href="http://weibo.com/{{site.social.weiboURL}}" title="@{{site.social.weibo}} 的 微博" target="_blank">
               <i class='social fa fa-weibo fa-2x'></i>
               <span class="label">Weibo</span>
             </a>
+          </li>
+          {% endif %}
+
+          {% if site.social.segmentfault %}
+          <!-- segmentfault -->
+          <li class="navigation__item_social">
+              <a href="https://segmentfault.com/u/{{site.social.segmentfaultURL}}/articles" title="@{{site.social.segmentfault}} 的 segmentfault博客" target="_blank">
+                  <i class='social fa fa-leaf fa-2x'></i>
+                  <span class="label">segmentfault</span>
+              </a>
           </li>
           {% endif %}
 

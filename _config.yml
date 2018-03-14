@@ -16,6 +16,11 @@ comment:
 # Social
 social:
     weibo: 我是帅帅的玉米
+    weiboURL: 2192386295/profile?topnav=1&wvr=6&is_all=1
+
+    segmentfault: 我是帅帅的玉米
+    segmentfaultURL: woshishuaishuaideyumi
+
     github: MealiaLin
     # twitter: 
     mail: mealie_lin@163.com
