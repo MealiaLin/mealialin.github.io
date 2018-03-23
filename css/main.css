@@ -376,8 +376,8 @@ img::-moz-selection {
     position: absolute;
     z-index: 1;
     width: 100%;
-    /*background-color: #a0a0a0;*/
-    background: url(/images/bloglistbg.jpg) no-repeat fixed;
+    /*background-color: #B9D3EE;*/
+    /*background: url(/images/bloglistbg.jpg) no-repeat fixed;*/
   }
   .content-wrapper {
     z-index: 800;
@@ -1477,6 +1477,7 @@ nav a {
   -webkit-align-items: stretch;
   -ms-flex-align: stretch;
   align-items: stretch;
+  height: 10px;
   min-height: 11rem;
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -1510,24 +1511,29 @@ nav a {
   width: 70%;
 }
 
-.post2 .post-content .post-date,
-.post2 .post-content .post-words {
+.post2 .post-content2 {
+  padding: 1rem;
+  width: 100%;
+}
+
+.post2  .post-date,
+.post2  .post-words {
   font-size: 12px;
 }
 
-.post .post-content .post-title {
+.post .post-title {
   margin: 0 0 10px;
-  font-size: 30px;
-  font-weight: 400;
+  font-size: 18px;
+  font-weight: 300;
 }
 
-.post2 .post-content .post-title a {
+.post2 .post-title a {
   font-family: 'PT Serif', serif;
   text-decoration: none;
   color: #263959;
 }
 
-.post2 .post-content p {
+.post2 p {
   margin-top: 0;
 }
 
