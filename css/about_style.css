@@ -5580,12 +5580,12 @@ h1, h2, h3, h4, h5, h6 {
 .award-img img {
     max-height: 180px;
     vertical-align: middle;
-    padding-left: 60px;
+    /*padding-left: 60px;*/
 }
 
 .award-title {
     font-size: 1.125em;
-    margin-top: 0;
+    /*margin-top: 5px;*/
     margin-bottom: 25px;
     text-align: center;
 }
@@ -5972,11 +5972,12 @@ h1, h2, h3, h4, h5, h6 {
 .education-box {
     position: relative;
     padding-left: 20px;
-    margin-bottom: 45px;
+    margin-bottom: 40px;
 }
 
 .education-box p {
     font-size: 0.875em;
+    margin: 0 !important;
 }
 
 .education-box:before {
