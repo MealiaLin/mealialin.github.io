@@ -7,13 +7,13 @@
     -ms-text-size-adjust: 100%;
 }
 
-body {
+/*body {
     font-size: 16px;
     line-height: 1.4em;
     letter-spacing: 0.08em;
     padding: 0;
     margin: 0;
-}
+}*/
 
 article,
 aside,
@@ -31,7 +31,7 @@ summary {
     display: block;
 }
 
-a,
+.ace-container a,
 input,
 button,
 select,
@@ -39,9 +39,9 @@ textarea {
     -webkit-tap-highlight-color: transparent;
 }
 
-*,
-*:before,
-*:after {
+.ace-container *,
+.ace-container *:before,
+.ace-container *:after {
     box-sizing: border-box;
 }
 
@@ -67,7 +67,7 @@ template {
 }
 
 /* Links */
-a {
+.ace-container a {
     color: inherit;
     cursor: pointer;
     text-decoration: underline;
@@ -82,61 +82,61 @@ a {
     transition: all 0.2s ease-out;
 }
 
-a:hover {
+.ace-container a:hover {
     text-decoration: none;
 }
 
 /*  Typography */
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+.ace-container h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     font-weight: 700;
     line-height: 1.1;
     margin-bottom: 22px;
 }
 
-h1:first-child, .h1:first-child, h2:first-child, .h2:first-child, h3:first-child, .h3:first-child, h4:first-child, .h4:first-child, h5:first-child, .h5:first-child, h6:first-child, .h6:first-child {
+.ace-container h1:first-child, .h1:first-child, h2:first-child, .h2:first-child, h3:first-child, .h3:first-child, h4:first-child, .h4:first-child, h5:first-child, .h5:first-child, h6:first-child, .h6:first-child {
     margin-top: 0;
 }
 
-h1 a, .h1 a, h2 a, .h2 a, h3 a, .h3 a, h4 a, .h4 a, h5 a, .h5 a, h6 a, .h6 a {
+.ace-container h1 a, .ace-container .h1 a, h2 a, .h2 a, h3 a, .h3 a, h4 a, .h4 a, h5 a, .h5 a, h6 a, .h6 a {
     text-decoration: none;
 }
 
-h1, .h1 {
+.ace-container h1, .h1 {
     font-size: 30px;
     margin-top: 44px;
 }
 
-h2, .h2 {
+.ace-container h2, .h2 {
     font-size: 24px;
     margin-top: 39.6px;
 }
 
-h3, .h3 {
+.ace-container h3, .h3 {
     font-size: 20px;
     margin-top: 30.8px;
 }
 
-h4, .h4 {
+.ace-container h4, .h4 {
     font-size: 18px;
     margin-top: 26.4px;
 }
 
-h5, .h5 {
+.ace-container h5, .h5 {
     font-size: 14px;
     margin-top: 24.2px;
 }
 
-h6, .h6 {
+.ace-container h6, .h6 {
     font-size: 12px;
     margin-top: 26.4px;
 }
 
-p {
+.ace-container .ace-container p {
     margin: 0 0 22px 0;
 }
 
-b,
-strong {
+.ace-container b,
+.ace-container strong {
     font-weight: 700;
 }
 
@@ -307,7 +307,7 @@ big {
 /***
  * 3.0 - Elements
  */
- hr {
+.ace-container hr {
     background: transparent;
     border-width: 0 0 1px 0;
     border-style: solid;
@@ -322,7 +322,7 @@ big {
     border-style: dashed;
 }
 
-ul, ol {
+.ace-container ul, ol {
     margin: 0 0 22px 0;
     padding: 0 0 0 1.6em;
 }
@@ -331,28 +331,28 @@ ol ol, ol ul, ul ol, ul ul {
     margin-bottom: 0;
 }
 
-ul {
+.ace-container ul {
     list-style-type: disc;
 }
 
-ol {
+.ace-container ol {
     list-style-type: decimal;
 }
 
-dl {
+.ace-container dl {
     font-size: 0.9em;
     margin-top: 22px;
     margin-bottom: 22px;
 }
 
-dt {
+.ace-container dt {
     font-weight: bold;
     text-transform: uppercase;
     font-size: 0.9em;
     letter-spacing: 0.01em;
 }
 
-dd {
+.ace-container dd {
     margin: 0 0 0.563em 0;
 }
 
@@ -4726,7 +4726,7 @@ blockquote.quote-side:before,
 
 /* Color Dark: $color-dark */
 /* Color Light: $color-light */
-hr,
+.ace-container hr,
 blockquote,
 .brd-btm,
 .post-tags a,
@@ -4791,6 +4791,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .ace-container {
+    font-size: 16px;
+    line-height: 1.4em;
+    letter-spacing: 0.08em;
     width: 100%;
     max-width: 940px;
     margin: 0 auto;
