@@ -4658,24 +4658,24 @@ yx-axis
     color: #c0e3e7;
 }
 
-mark,
-.bg-primary,
-.btn-primary,
-.bg-primary.text-dropcup-sq,
-.raiting-circle .fill {
+.ace-container mark,
+.ace-container .bg-primary,
+.ace-container .btn-primary,
+.ace-container .bg-primary.text-dropcup-sq,
+.ace-container .raiting-circle .fill {
     background-color: #c0e3e7;
 }
 
-.brd-primary,
+.ace-container .brd-primary,
 #ace-nav-sm li.active a {
     border-color: #c0e3e7;
 }
 
-::-moz-selection {
+.ace-container ::-moz-selection {
     background-color: #c0e3e7;
 }
 
-::selection {
+.ace-container ::selection {
     background-color: #c0e3e7;
 }
 
@@ -4686,35 +4686,35 @@ blockquote.quote-top:before,
 blockquote.quote-side:before,
 .form-item,
 .ace-logo,
-.btn-primary {
+.ace-container .btn-primary {
     color: #010101;
 }
 
-::-moz-selection {
+.ace-container ::-moz-selection {
     color: #010101;
 }
 
-::selection {
+.ace-container ::selection {
     color: #010101;
 }
 
-::-webkit-input-placeholder {
+.ace-container ::-webkit-input-placeholder {
     color: #010101;
 }
 
-::-moz-placeholder {
+.ace-container ::-moz-placeholder {
     color: #010101;
 }
 
-:-ms-input-placeholder {
+.ace-container :-ms-input-placeholder {
     color: #010101;
 }
 
-:-moz-placeholder {
+.ace-container :-moz-placeholder {
     color: #010101;
 }
 
-.text-dropcup-sq {
+.ace-container .text-dropcup-sq {
     background-color: #010101;
 }
 
