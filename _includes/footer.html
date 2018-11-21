@@ -25,6 +25,16 @@
           </li>
           {% endif %}
 
+          {% if site.social.csdn %}
+          <!-- csdn -->
+          <li class="navigation__item_social">
+              <a href="https:///blog.csdn.net/{{site.social.csdnURL}}" title="@{{site.social.csdn}} 的 csdn" target="_blank">
+                  <i class='social fa fa-book fa-2x'></i>
+                  <span class="label">csdn</span>
+              </a>
+          </li>
+          {% endif %}
+
           {% if site.social.github %}
           <!-- Github -->
           <li class="navigation__item_social">
