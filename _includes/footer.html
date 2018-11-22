@@ -35,6 +35,16 @@
           </li>
           {% endif %}
 
+          {% if site.social.jianshu %}
+          <!-- csdn -->
+          <li class="navigation__item_social">
+              <a href="https:///blog.csdn.net/{{site.social.jianshuURL}}" title="@{{site.social.jianshu}} 的简书" target="_blank">
+                  <i class='social fa fa-newspaper-o fa-2x'></i>
+                  <span class="label">简书</span>
+              </a>
+          </li>
+          {% endif %}
+
           {% if site.social.github %}
           <!-- Github -->
           <li class="navigation__item_social">
