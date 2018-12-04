@@ -28,7 +28,7 @@ social:
     jianshuURL: 90c6697b9e7b
 
     github: MealiaLin
-    # twitter: 
+    # twitter:
     mail: mealie_lin@163.com
 
 # 百度统计 
@@ -68,7 +68,7 @@ blog_button:
 nav:
     - {title: 存档, description: archive, url: '/archive'}   
     - {title: 标签, description: tags, url: '/tags'}
-    - {title: 关于, description: about, url: '/about'}
+    # - {title: 关于, description: about, url: '/about'}
 
 
 # Pagination
