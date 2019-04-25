@@ -3,7 +3,7 @@ layout: post
 title: 【vue组件通信②】使用$emit和$on进行组件之间的传值
 date: 2017-09-30 00:00:00 +0300
 description:
-img: i-rest.jpg # Add image post (optional)
+img: # Add image post (optional)
 tags: [vue.js]
 ---
 $emit和$on可以实现组件之间的传值，我们知道父组件传值给子组件使用props，但是不允许子组件传值给父组件，这时候使用这个就可以实现了。这也可以用在兄弟组件之间的通信。

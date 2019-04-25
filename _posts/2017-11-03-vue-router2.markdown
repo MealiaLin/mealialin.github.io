@@ -3,7 +3,7 @@ layout: post
 title: 【vue-router②】使用导航守卫控制页面前进刷新，后退缓存
 date: 2017-11-03 00:00:00 +0300
 description:  # Add post description (optional)
-img:  mac.jpg # Add image post (optional)
+img: # Add image post (optional)
 tags: [vue.js] # add tag
 ---
 
